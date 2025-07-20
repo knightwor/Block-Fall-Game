@@ -5,11 +5,15 @@
   padding: 0;
   box-sizing: border-box;
   /* font-family: "Work Sans", sans-serif; */
-  /* font-family: "Playwrite DE Grund", cursive; */
+  font-family: "Playwrite DE Grund", cursive;
   /* font-family: "Poppins", sans-serif; */
-  font-family: "Oswald", sans-serif;
-  text-transform: uppercase;
+  /* font-family: "Oswald", sans-serif; */
+  text-transform: capitalize;
   letter-spacing: 0.5px;
+}
+
+h2 {
+  font-family: "Poppins", sans-serif;
 }
 
 i {
@@ -78,7 +82,7 @@ i {
 }
 
 .end-screen h2 {
-  color: #BD2031;
+  color: #e0394a;
 }
 
 .hide {
@@ -117,6 +121,12 @@ i {
   align-items: center;
   gap: max(5px,min(2vw,20px));
   margin-top: 50px;
+}
+
+.end-screen .buttons button {
+  background-color: rgba(238, 236, 255, 0.2);
+  backdrop-filter: blur(5px);
+  padding: 10px 20px;
 }
 
 .character {
@@ -180,7 +190,9 @@ i {
 
 button {
   transition: background 300ms, box-shadow 200ms, scale 300ms, color 100ms;
-  background: #4169e3;
+  background: rgba(238, 236, 255, 0.1);
+  border: none;
+  backdrop-filter: blur(5px);
   color: #eeecff;
   cursor: pointer;
   border-radius: 10px;
@@ -214,66 +226,69 @@ button:active {
   gap: 10px;
 }
 
-.author-info .author-links a {
-  color: #888;
-  font-size: 1.5rem;
+.author-info a {
+  font-family: monospace;
+  color: #f58c46;
+  text-decoration: none;
+  font-weight: 600;
   cursor: pointer;
   transition: all 300ms ease;
 
-  &:hover {
-    color: #eeecff;
-  }
 } 
 
 .author-info p {
   font-size: 1rem;
 }
 
-.slider-box {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  flex-direction: column;
-  gap: 10px;
-}
-
 .slider-name {
   font-size: 1rem;
   color: #eeecff;
-  font-weight: 500;
+  margin-bottom: 10px;
 }
 
 .slider {
-  -webkit-appearance: none;  
+  -webkit-appearance: none;
   appearance: none;
-  width: 200px; 
-  height: 15px; 
-  background: #121212; 
-  outline: none; 
-  opacity: 0.7; 
-  -webkit-transition: .2s; 
-  transition: opacity .2s;
+  width: 200px;
+  height: 12px;
+  background: linear-gradient(to right, #161616, #242424);
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(11, 11, 11, 0.5);
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
-.slider:hover {
-  opacity: 1; 
-}
 
 .slider::-webkit-slider-thumb {
-  -webkit-appearance: none; 
+  -webkit-appearance: none;
   appearance: none;
-  width: 25px; 
-  height: 25px; 
-  background: #4169e3; 
-  cursor: pointer; 
+  width: 22px;
+  height: 22px;
+  background: #eeecff;
+  border: 1px solid #4169e3;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 0px rgba(65, 105, 227, 0.8);
+}
+.slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 15px rgba(65, 105, 227, 1);
 }
 
 .slider::-moz-range-thumb {
-  width: 25px; 
-  height: 25px; 
-  background: #4169e3; 
-  cursor: pointer; 
+  width: 22px;
+  height: 22px;
+  background: #eeecff;
+  border: 2px solid #4169e3;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 0 10px rgba(65, 105, 227, 0.8);
+}
+.slider::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 15px rgba(65, 105, 227, 1);
 }
 
 .game-setting {
@@ -293,7 +308,9 @@ button:active {
   width: 250px;
   height: 300px;
   border-radius: 10px;
-  background: #080808;
+  background: #08080898;
+  backdrop-filter: blur(5px);
+  border: 2px solid #111111;
   display: flex;
   justify-content: start;
   align-items: center;
@@ -305,11 +322,12 @@ button:active {
 .game-setting .main-box .buttons {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 6px;
+  gap: 20px;
   position: absolute;
   bottom: 20px;
+  padding: 0 20px;
 }
 
 .game-setting i {
@@ -317,8 +335,12 @@ button:active {
 }
 
 .game-setting button {
-  padding: 10px 25px 10px 20px;
-  font-size: 0.7rem;
+  padding: 7px 17px;
+  font-size: 0.9rem;
+}
+
+.game-setting .reset-btn {
+  background-color: rgba(255, 0, 0, 0.5);
 }
 
 @media only screen and (min-width: 900px) {
@@ -342,6 +364,19 @@ button:active {
   .character, .block {
     width: calc(100% / 5);
     height: calc(100vw / 4.5);
+  }
+
+  .end-screen h2 {
+    font-size: max(2.5rem, 5vw);
+  }
+
+  .author-info {
+    width: 80%;
+  }
+
+  .author-info p,
+  .author-info a {
+    font-size: 0.8rem;
   }
 
 }

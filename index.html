@@ -1,95 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Enjoy playing block fall game created by mr solo dev.">
 
-    <title>Block Fall</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Enjoy playing block fall game created by mr solo dev.">
 
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="media/ic-trans.png" />
-    <script src="https://kit.fontawesome.com/b80e7d170d.js" crossorigin="anonymous"></script>
-    <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css"
-/>
-  
+  <title>Block Fall</title>
 
-  </head>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="media/ic-trans.png" />
+  <script src="https://kit.fontawesome.com/b80e7d170d.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css" />
 
-  <body>
-    <div class="screen" id="screen">
-      
-      <div class="play-ground hide" id="play-ground">
 
-        <div class="block" id="block-left"></div>
-        <div class="block" id="block-mid"></div>
-        <div class="block" id="block-right"></div>
+</head>
 
-        <p id="score" class="score">Score : 0</p>
-        <div class="character" id="character"></div>
-        <button class="left-btn" id="left-btn">
+<body>
+  <div class="screen" id="screen">
+
+    <section class="play-ground hide" id="play-ground">
+
+
+
+      <div class="block" id="block-left"></div>
+      <div class="block" id="block-mid"></div>
+      <div class="block" id="block-right"></div>
+
+      <p id="score" class="score">Score : 0</p>
+      <div class="character" id="character"></div>
+      <button class="left-btn" id="left-btn">
+        <i class="iconoir-arrow-left"></i>
+      </button>
+      <button class="right-btn" id="right-btn">
+        <i class="iconoir-arrow-right"></i>
+      </button>
+    </section>
+
+    <section class="start-screen hide" id="start-screen">
+      <h2 class="game-title">Block Fall</h2>
+
+      <div class="buttons">
+        <button class="play-btn" id="play-btn">
+          <i class="iconoir-play"></i>
+          <span>Play</span>
+        </button>
+        <button class="opt-btn" id="opt-btn">
+          <i class="iconoir-settings"></i>
+          <span>Config</span>
+        </button>
+      </div>
+
+      <div class="author-info">
+        <p class="game-desc">Avoid the falling blocks and score as much as you can.</p>
+        <br>
+        <p class="game-creator">Created by <a href="https://github.com/knightwor" target="_blank">KnightWor</a></p>
+        <p class="game-creator">Follow me on <a href="https://instagram.com/knightwor_" target="_blank">Instagram</a>
+          and <a href="https://youtube.com/@mr.solodev" target="_blank">YouTube</a></p>
+      </div>
+
+    </section>
+
+    <section class="end-screen hide" id="end-screen">
+      <h2 class="game-title" id="final-title">Over</h2>
+      <pre class="game-result" id="game-result">You Scored :  00</pre>
+      <div class="buttons">
+        <button class="quit-btn" id="quit-btn">
           <i class="iconoir-arrow-left"></i>
+          <span>Quit</span>
         </button>
-        <button class="right-btn" id="right-btn">
-          <i class="iconoir-arrow-right"></i>
+        <button class="retry-btn" id="retry-btn">
+          <i class="iconoir-refresh"></i>
+          <span>Retry</span>
         </button>
       </div>
-      
-      <div class="start-screen hide" id="start-screen">
-          <h2 class="game-title">Block Fall</h2>
 
-          <div class="buttons">
-            <button class="play-btn" id="play-btn">
-              <i class="iconoir-play"></i>
-              <span>Play</span>
-            </button>
-            <button class="opt-btn" id="opt-btn">
-              <i class="iconoir-settings"></i>
-              <span>Config</span>
-            </button>
-          </div>
+    </section>
 
-      </div>
-
-      <div class="end-screen hide" id="end-screen">
-        <h2 class="game-title">Game Over!</h2>
-        <pre class="game-result" id="game-result">Your Total Score :  00</pre>
-        <div class="buttons">
-          <button class="quit-btn" id="quit-btn">
-            <i class="iconoir-arrow-left"></i>
-            <span>Quit</span>
-          </button>
-          <button class="retry-btn" id="retry-btn">
-            <i class="iconoir-refresh"></i>
-            <span>Retry</span>
-          </button>
+    <section class="game-setting" id="game-setting">
+      <div class="main-box">
+        <div class="slider-box">
+          <p class="slider-name">Game Speed : <span id="speed-slider-value">08</span></p>
+          <input type="range" id="speed-slider" min="5" max="20" value="8" class="slider" />
         </div>
 
-    </div>
-
-      <div class="game-setting" id="game-setting">
-          <div class="main-box">
-            <div class="slider-box">
-              <p class="slider-name">GAME SPEED : <span id="speed-slider-value">08</span></p>
-              <input type="range" id="speed-slider" min="5" max="20" value="8" class="slider">
-            </div>
-
-            <div class="buttons">
-              <button class="back-btn" id="back-btn">
-                <i class="iconoir-arrow-left"></i>
-                <span>Back</span>
-              </button>
-              <button class="reset-btn" id="reset-btn">
-                <i class="iconoir-refresh"></i>
-                <span>Reset</span>
-              </button>
-            </div>
-          </div>
+        <div class="buttons">
+          <button class="back-btn" id="back-btn">
+            <!-- <i class="iconoir-arrow-left"></i> -->
+            <span>Back</span>
+          </button>
+          <button class="reset-btn" id="reset-btn">
+            <!-- <i class="iconoir-refresh"></i> -->
+            <span>Reset</span>
+          </button>
+        </div>
       </div>
+    </section>
+
+
 
     <script type="module" src="main.js"></script>
-  </body>
+</body>
+
 </html>

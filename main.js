@@ -20,6 +20,7 @@ const gameSpeedSlider = document.getElementById("speed-slider")
 const gameSpeedSliderTxt = document.getElementById("speed-slider-value")
 const gameSettingsMenu = document.getElementById("game-setting")
 const closeSettingsMenuButton = document.getElementById("back-btn")
+const finalTitle = document.getElementById("final-title");
 
 const viewPadding = window.innerWidth < 500 ? (window.innerWidth / 7) : 50
 const blockWidth = window.innerWidth < 500 ? (window.innerWidth / 9) : 100
@@ -39,6 +40,7 @@ let isGameOver = true
 let chanceForBlockA = Math.floor(Math.random() * (enemyArr.length * 100))
 let chanceForBlockB = Math.floor(Math.random() * (enemyArr.length * 100))
 let colors = ["#B8B8FF", "salmon", "#b3446c", "#f88379", "#7eb77f", "#b284be"];
+let finalResposnes = ["Oops!", "Game Over", "Try Again", "Keep Trying!", "Eliminated", "You Lost", "Keep Going!", "Terminated", "Defeated"]
 
 enemyArr.forEach(obj => {
   obj.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
@@ -53,7 +55,8 @@ function main() {
     moveEnemy(enemyArr)
 
     if (checkCollision(character, enemyLeft) || checkCollision(character, enemyMid) || checkCollision(character, enemyRight)) {
-      gameResult.textContent = `Your Total Score :  ${score}`
+      gameResult.textContent = `Your Score  +${score}`
+      finalTitle.textContent = finalResposnes[Math.floor(Math.random() * finalResposnes.length)]
       showElement(endGameMenu)
       count = 0
       score = 0
