@@ -21,6 +21,7 @@ const gameSpeedSliderTxt = document.getElementById("speed-slider-value")
 const gameSettingsMenu = document.getElementById("game-setting")
 const closeSettingsMenuButton = document.getElementById("back-btn")
 const finalTitle = document.getElementById("final-title");
+const colorPicker = document.getElementById("color-picker");
 
 const viewPadding = window.innerWidth < 500 ? (window.innerWidth / 7) : 50
 const blockWidth = window.innerWidth < 500 ? (window.innerWidth / 9) : 100
@@ -29,7 +30,8 @@ const blockGap = viewPadding
 const enemyArr = [enemyLeft, enemyMid, enemyRight]
 
 const DEFUALT_GAME_CONFING = {
-  GAME_SPEED: 8
+  GAME_SPEED: 8,
+  CHARACTER_COLOR: "#4169e3",
 }
 
 let gameSpeed = DEFUALT_GAME_CONFING.GAME_SPEED
@@ -42,10 +44,16 @@ let chanceForBlockB = Math.floor(Math.random() * (enemyArr.length * 100))
 let colors = ["#B8B8FF", "salmon", "#b3446c", "#f88379", "#7eb77f", "#b284be"];
 let finalResposnes = ["Oops!", "Game Over", "Try Again", "Keep Trying!", "Eliminated", "You Lost", "Keep Going!", "Terminated", "Defeated"]
 
+character.style.backgroundColor = colorPicker.value
+colorPicker.addEventListener("input", (e) => {
+  character.style.backgroundColor = e.target.value
+})
 enemyArr.forEach(obj => {
   obj.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
 })
 
+const HitSFX = new Audio("./music/pew.mp3");
+HitSFX.volume = 0.5;
 
 function main() {
  
@@ -55,6 +63,7 @@ function main() {
     moveEnemy(enemyArr)
 
     if (checkCollision(character, enemyLeft) || checkCollision(character, enemyMid) || checkCollision(character, enemyRight)) {
+      HitSFX.play();
       gameResult.textContent = `Your Score  +${score}`
       finalTitle.textContent = finalResposnes[Math.floor(Math.random() * finalResposnes.length)]
       showElement(endGameMenu)
@@ -62,6 +71,11 @@ function main() {
       score = 0
     
       isGameOver = true
+      
+      setTimeout(() => {
+        HitSFX.pause();
+        HitSFX.currentTime = 0;
+      }, 500);
     }
 
   }
@@ -160,6 +174,8 @@ function hideElement(element) {
 
 function resetSettings() {
   modifyGameSpeed(DEFUALT_GAME_CONFING.GAME_SPEED)
+  character.style.backgroundColor = DEFUALT_GAME_CONFING.CHARACTER_COLOR
+  colorPicker.value = DEFUALT_GAME_CONFING.CHARACTER_COLOR
 }
 
 function modifyGameSpeed(value) {
@@ -177,7 +193,29 @@ document.addEventListener('keydown', (e)=>{
     moveCharacterLeft()
   } else if (e.key === 'ArrowRight' || e.key == "d" || e.key == "D ") {
     moveCharacterRight()
+  } else if (e.key === 'Enter' || e.key === " ") {
+    if (isGameOver) {
+      startGame()
+    } else {
+      moveCharacterRight()
+    }
+  } else if (e.key === 'Escape') {
+    if (!isGameOver) return;
+
+    if (gameSettingsMenu.style.display === "flex") {
+      closeSettings()
+    } else {
+      openSettings()
+    }
   }
+  else if (e.key === 'r' || e.key === 'R') {
+    if (isGameOver) {
+      startGame()
+    } else {
+      
+    }
+  }
+ 
 })
 
 playBtn.addEventListener('click', startGame)
