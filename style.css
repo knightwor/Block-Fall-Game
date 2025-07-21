@@ -4,16 +4,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* font-family: "Work Sans", sans-serif; */
-  font-family: "Playwrite DE Grund", cursive;
-  /* font-family: "Poppins", sans-serif; */
-  /* font-family: "Oswald", sans-serif; */
+  font-family: "Poppins", sans-serif;
   text-transform: capitalize;
   letter-spacing: 0.5px;
-}
-
-h2 {
-  font-family: "Poppins", sans-serif;
 }
 
 i {
@@ -150,7 +143,7 @@ i {
 .left-btn {
   width: 55px;
   height: 55px;
-  background: rgba(238, 236, 255, 0.3);
+  background: rgba(40, 40, 40, 0.5);
   backdrop-filter: blur(5px);
   border: none;
   outline: none;
@@ -228,20 +221,20 @@ button:active {
 }
 
 .author-info a {
-  font-family: monospace;
   color: #f58c46;
   text-decoration: none;
   font-weight: 600;
   cursor: pointer;
   transition: all 300ms ease;
-
+  font-family: "Playwrite DE Grund", cursive;
 } 
 
 .author-info p {
   font-size: 1rem;
 }
 
-.slider-name {
+.slider-box .name,
+.color-box .name {
   font-size: 1rem;
   color: #eeecff;
   margin-bottom: 10px;
@@ -259,6 +252,31 @@ button:active {
   cursor: pointer;
 }
 
+.color-box {
+  width: 200px;
+}
+
+.color-box .color-in {
+  width: 100%;
+  height: 40px;
+  border: 2px solid rgba(17, 17, 17, 0.8);
+  outline: none;
+  padding: 0;
+  cursor: pointer;
+  appearance: none; /* remove default styles */
+  background: transparent;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.color-box .color-in::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-box .color-in::-webkit-color-swatch {
+  border: none;
+  border-radius: 8px;
+}
 
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -378,6 +396,11 @@ button:active {
   .author-info p,
   .author-info a {
     font-size: 0.8rem;
+  }
+
+  .score {
+    background: rgba(65, 105, 227, 0.8);
+    backdrop-filter: blur(5px);
   }
 
 }
