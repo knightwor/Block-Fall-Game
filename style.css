@@ -69,7 +69,7 @@ i {
 }
 
 .end-screen pre {
-  font-size: max(16px,min(3vw,2rem));
+  font-size: max(16px,min(3vw,1.5rem));
   color: #ededed;
   font-weight: 500;
 }
@@ -105,8 +105,6 @@ i {
   align-items: center;
   gap: 10px;
 }
-
-
 
 .end-screen .buttons {
   display: flex;
@@ -167,7 +165,7 @@ i {
 }
 
 .score {
-  background: #4169e3;
+  background: #111111;
   border-radius: 5px;
   font-weight: 600;
   font-size: 1.03rem;
@@ -234,7 +232,8 @@ button:active {
 }
 
 .slider-box .name,
-.color-box .name {
+.color-box .name,
+.toggle-box .name {
   font-size: 1rem;
   color: #eeecff;
   margin-bottom: 10px;
@@ -243,7 +242,7 @@ button:active {
 .slider {
   -webkit-appearance: none;
   appearance: none;
-  width: 200px;
+  width: 100%;
   height: 12px;
   background: linear-gradient(to right, #161616, #242424);
   border-radius: 6px;
@@ -252,8 +251,10 @@ button:active {
   cursor: pointer;
 }
 
-.color-box {
-  width: 200px;
+.color-box,
+.slider-box,
+.toggle-box {
+  width: 100%;
 }
 
 .color-box .color-in {
@@ -310,6 +311,60 @@ button:active {
   box-shadow: 0 0 15px rgba(65, 105, 227, 1);
 }
 
+.toggle-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 22px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #161616;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: #eeecff;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #4169e3;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(18px);
+}
+
+/* Optional: rounded switch */
+.toggle-slider.round {
+  border-radius: 34px;
+}
+
+
 .game-setting {
   position: fixed;
   width: 100dvw;
@@ -324,10 +379,10 @@ button:active {
 
 .game-setting .main-box {
   position: relative;
-  width: 250px;
-  height: 300px;
+  width: 300px;
+  height: 350px;
   border-radius: 10px;
-  background: #08080898;
+  background: rgba(17, 17, 17, 0.7);
   backdrop-filter: blur(5px);
   border: 2px solid #111111;
   display: flex;
@@ -399,7 +454,7 @@ button:active {
   }
 
   .score {
-    background: rgba(65, 105, 227, 0.8);
+    background: rgba(17, 17, 17, 0.8);
     backdrop-filter: blur(5px);
   }
 
