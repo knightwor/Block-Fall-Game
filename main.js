@@ -22,6 +22,7 @@ const gameSettingsMenu = document.getElementById("game-setting")
 const closeSettingsMenuButton = document.getElementById("back-btn")
 const finalTitle = document.getElementById("final-title");
 const colorPicker = document.getElementById("color-picker");
+const gestureToggle = document.getElementById("gesture-toggle");
 
 const viewPadding = window.innerWidth < 500 ? (window.innerWidth / 7) : 50
 const blockWidth = window.innerWidth < 500 ? (window.innerWidth / 9) : 100
@@ -33,11 +34,14 @@ const DEFUALT_GAME_CONFING = {
   GAME_SPEED: 8,
   CHARACTER_COLOR: "#4169e3",
 }
+const HitSFX = new Audio("./music/pew.mp3");
+HitSFX.volume = 0.5;
 
+let isGestureEnabled = false;
 let gameSpeed = DEFUALT_GAME_CONFING.GAME_SPEED
 let score = 0;
+let highScore = 0;
 let blockPosIndex = 1;
-let count = 0
 let isGameOver = true
 let chanceForBlockA = Math.floor(Math.random() * (enemyArr.length * 100))
 let chanceForBlockB = Math.floor(Math.random() * (enemyArr.length * 100))
@@ -52,22 +56,22 @@ enemyArr.forEach(obj => {
   obj.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)]
 })
 
-const HitSFX = new Audio("./music/pew.mp3");
-HitSFX.volume = 0.5;
-
 function main() {
  
   if (!isGameOver) {
+    loadHighScore();
     scoreBoard.textContent = `Score: ${score}`;
-    
     moveEnemy(enemyArr)
 
     if (checkCollision(character, enemyLeft) || checkCollision(character, enemyMid) || checkCollision(character, enemyRight)) {
       HitSFX.play();
-      gameResult.textContent = `Your Score  +${score}`
+      if (score > highScore) {
+        setHighScore();
+      }
+      gameResult.textContent = `High Score :  +${highScore}\nYour Score :  +${score}`
       finalTitle.textContent = finalResposnes[Math.floor(Math.random() * finalResposnes.length)]
       showElement(endGameMenu)
-      count = 0
+    
       score = 0
     
       isGameOver = true
@@ -85,6 +89,23 @@ function main() {
 
 showElement(gameMenu)
 main()
+
+function setHighScore() {
+  if (score > highScore) {
+    highScore = score;
+  }
+  localStorage.setItem("highScore", highScore);
+}
+
+function loadHighScore() {
+  const storedHighScore = localStorage.getItem("highScore");
+  if (storedHighScore) {
+    highScore = parseInt(storedHighScore, 10);
+  } else {
+    highScore = 0;
+  }
+  
+}
 
 function startGame() {
   hideElement(gameMenu)
@@ -176,6 +197,10 @@ function resetSettings() {
   modifyGameSpeed(DEFUALT_GAME_CONFING.GAME_SPEED)
   character.style.backgroundColor = DEFUALT_GAME_CONFING.CHARACTER_COLOR
   colorPicker.value = DEFUALT_GAME_CONFING.CHARACTER_COLOR
+
+  isGestureEnabled = false;
+  gestureToggle.checked = false;
+  playGround.style.touchAction = "none";
 }
 
 function modifyGameSpeed(value) {
@@ -188,7 +213,37 @@ function modifyGameSpeed(value) {
   gameSpeedSlider.value = value
 }
 
-document.addEventListener('keydown', (e)=>{
+function handleGesture(e) {
+  if (!isGestureEnabled) return;
+  if (isGameOver) return;
+
+  const touch = e.touches[0];
+  const touchX = touch.clientX;
+
+  character.style.left = `${touchX - (blockWidth / 2)}px`;
+  if (touchX < viewPadding) {
+    character.style.left = `${viewPadding}px`;
+  }
+  if (touchX > window.innerWidth - viewPadding - blockWidth) {          
+    character.style.left = `${window.innerWidth - viewPadding - blockWidth}px`;
+  }
+  if (touchX < viewPadding) {
+    character.style.left = `${viewPadding}px`;
+  }
+  if (touchX > window.innerWidth - viewPadding - blockWidth) {
+    character.style.left = `${window.innerWidth - viewPadding - blockWidth}px`;
+  }
+  blockPosIndex = Math.floor((parseInt(character.style.left) - viewPadding) / (blockWidth + blockGap));
+  if (blockPosIndex < 0) blockPosIndex = 0;
+  if (blockPosIndex > 2) blockPosIndex = 2
+  character.style.left = `${(blockWidth + blockGap) * blockPosIndex + viewPadding}px`;
+ 
+  e.stopPropagation();
+  e.preventDefault();
+  return false;
+}
+
+function handleKeyListeners(e) {
   if (e.key == 'ArrowLeft' || e.key == "a" || e.key == "A") {
     moveCharacterLeft()
   } else if (e.key === 'ArrowRight' || e.key == "d" || e.key == "D ") {
@@ -215,8 +270,29 @@ document.addEventListener('keydown', (e)=>{
       
     }
   }
- 
-})
+  else if (e.key === 'q' || e.key === 'Q') {
+    if (isGameOver) {
+      backToStart()
+    } else {
+      
+    }
+  }
+}
+
+function handleGestureSetup(e) {
+  isGestureEnabled = e.target.checked;
+  if (isGestureEnabled) {
+    leftBtn.style.opacity = "0";
+    rightBtn.style.opacity = "0";
+    playGround.style.touchAction = "none"; 
+  } else {
+    leftBtn.style.opacity = "1"; 
+    rightBtn.style.opacity = "1";
+    playGround.style.touchAction = "auto"; 
+  }
+}
+
+document.addEventListener('keydown', (e) => handleKeyListeners(e));
 
 playBtn.addEventListener('click', startGame)
 retryBtn.addEventListener('click', startGame)
@@ -229,3 +305,5 @@ closeSettingsMenuButton.addEventListener("click", closeSettings)
 gameSpeedSlider.addEventListener("input", (e) => {
   modifyGameSpeed(e.target.value)
 })
+gestureToggle.addEventListener("change", (e) => handleGestureSetup(e));
+playGround.addEventListener("touchmove", (e) => handleGesture(e), { passive: false });
