@@ -69,9 +69,11 @@ i {
 }
 
 .end-screen pre {
-  font-size: max(16px,min(3vw,1.5rem));
+  font-size: max(14px,min(3vw,1.5rem));
   color: #ededed;
   font-weight: 500;
+  text-transform: none;
+  font-family: monospace;
 }
 
 .end-screen h2 {
@@ -442,6 +444,11 @@ input:checked + .toggle-slider:before {
 
   .end-screen h2 {
     font-size: max(2.5rem, 5vw);
+  }
+
+  .end-screen h2,
+  .start-screen h2 {
+    margin-bottom: 20px;
   }
 
   .author-info {

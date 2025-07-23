@@ -16,7 +16,7 @@ const retryBtn = document.getElementById("retry-btn")
 const quitBtn = document.getElementById("quit-btn")
 const resetBtn = document.getElementById("reset-btn")
 const optBtn = document.getElementById("opt-btn")
-const gameSpeedSlider = document.getElementById("speed-slider") 
+const gameSpeedSlider = document.getElementById("speed-slider")
 const gameSpeedSliderTxt = document.getElementById("speed-slider-value")
 const gameSettingsMenu = document.getElementById("game-setting")
 const closeSettingsMenuButton = document.getElementById("back-btn")
@@ -37,6 +37,18 @@ const DEFUALT_GAME_CONFING = {
 const HitSFX = new Audio("./music/pew.mp3");
 HitSFX.volume = 0.5;
 
+const indent = "    "; 
+const highScoreLabel = "High Score :";
+const gameSpeedLabel = "Game Speed :";
+const yourScoreLabel = "Your Score :";
+const divider = "───────────✦───────────";
+const maxLabelLength = Math.max(
+  highScoreLabel.length,
+  gameSpeedLabel.length,
+  yourScoreLabel.length
+);
+
+
 let isGestureEnabled = false;
 let gameSpeed = DEFUALT_GAME_CONFING.GAME_SPEED
 let score = 0;
@@ -46,7 +58,7 @@ let isGameOver = true
 let chanceForBlockA = Math.floor(Math.random() * (enemyArr.length * 100))
 let chanceForBlockB = Math.floor(Math.random() * (enemyArr.length * 100))
 let colors = ["#B8B8FF", "salmon", "#b3446c", "#f88379", "#7eb77f", "#b284be"];
-let finalResposnes = ["Oops!", "Game Over", "Try Again", "Keep Trying!", "Eliminated", "You Lost", "Keep Going!", "Terminated", "Defeated"]
+let finalResposnes = ["Game Over", "Try Again", "Keep Trying!", "Eliminated", "You Lost", "Keep Going!", "Terminated", "Defeated"]
 
 character.style.backgroundColor = colorPicker.value
 colorPicker.addEventListener("input", (e) => {
@@ -57,7 +69,7 @@ enemyArr.forEach(obj => {
 })
 
 function main() {
- 
+
   if (!isGameOver) {
     loadHighScore();
     scoreBoard.textContent = `Score: ${score}`;
@@ -68,14 +80,21 @@ function main() {
       if (score > highScore) {
         setHighScore();
       }
-      gameResult.textContent = `High Score :  +${highScore}\nYour Score :  +${score}`
+
+const formattedText = `
+${highScoreLabel.padEnd(maxLabelLength)}\t+${highScore}\n
+${gameSpeedLabel.padEnd(maxLabelLength)}\tx${gameSpeed}\n
+${divider}\n
+${yourScoreLabel.padEnd(maxLabelLength)}\t+${score}
+`;
+      gameResult.textContent = formattedText;
       finalTitle.textContent = finalResposnes[Math.floor(Math.random() * finalResposnes.length)]
       showElement(endGameMenu)
-    
+
       score = 0
-    
+
       isGameOver = true
-      
+
       setTimeout(() => {
         HitSFX.pause();
         HitSFX.currentTime = 0;
@@ -83,7 +102,7 @@ function main() {
     }
 
   }
-  
+
   requestAnimationFrame(main)
 }
 
@@ -104,7 +123,7 @@ function loadHighScore() {
   } else {
     highScore = 0;
   }
-  
+
 }
 
 function startGame() {
@@ -149,9 +168,9 @@ function moveEnemy(arr) {
   if (BBI === BAI) chanceForBlockB = Math.floor(Math.random() * (enemyArr.length * 100))
 
   let by = arr[BAI].getBoundingClientRect().top
-  let bh = arr[BAI].getBoundingClientRect().height 
+  let bh = arr[BAI].getBoundingClientRect().height
   let by2 = arr[BBI].getBoundingClientRect().top
-  let bh2 = arr[BBI].getBoundingClientRect().height 
+  let bh2 = arr[BBI].getBoundingClientRect().height
 
   if (by > window.innerHeight + bh * 2) {
     arr[BAI].style.top = `-${bh}px`
@@ -166,14 +185,14 @@ function moveEnemy(arr) {
     chanceForBlockB = Math.floor(Math.random() * (enemyArr.length * 100))
     score += 1
   } else arr[BBI].style.top = `${by2 + (gameSpeed * (BBI + 1))}px`
-  
+
 }
 
 function moveCharacterLeft() {
   if (blockPosIndex > 0 && !isGameOver) {
     blockPosIndex -= 1
     character.style.left = `${(blockWidth + blockGap) * blockPosIndex + viewPadding}px`;
-    
+
   } else return
 }
 
@@ -181,7 +200,7 @@ function moveCharacterRight() {
   if (blockPosIndex < 2 && !isGameOver) {
     blockPosIndex += 1
     character.style.left = `${(blockWidth + blockGap) * blockPosIndex + viewPadding}px`;
-    
+
   } else return
 }
 
@@ -206,7 +225,7 @@ function resetSettings() {
 function modifyGameSpeed(value) {
 
   if (value < 10)
-      value = `0${value}`
+    value = `0${value}`
 
   gameSpeedSliderTxt.innerText = value
   gameSpeed = value
@@ -224,7 +243,7 @@ function handleGesture(e) {
   if (touchX < viewPadding) {
     character.style.left = `${viewPadding}px`;
   }
-  if (touchX > window.innerWidth - viewPadding - blockWidth) {          
+  if (touchX > window.innerWidth - viewPadding - blockWidth) {
     character.style.left = `${window.innerWidth - viewPadding - blockWidth}px`;
   }
   if (touchX < viewPadding) {
@@ -237,7 +256,7 @@ function handleGesture(e) {
   if (blockPosIndex < 0) blockPosIndex = 0;
   if (blockPosIndex > 2) blockPosIndex = 2
   character.style.left = `${(blockWidth + blockGap) * blockPosIndex + viewPadding}px`;
- 
+
   e.stopPropagation();
   e.preventDefault();
   return false;
@@ -267,14 +286,14 @@ function handleKeyListeners(e) {
     if (isGameOver) {
       startGame()
     } else {
-      
+
     }
   }
   else if (e.key === 'q' || e.key === 'Q') {
     if (isGameOver) {
       backToStart()
     } else {
-      
+
     }
   }
 }
@@ -284,11 +303,11 @@ function handleGestureSetup(e) {
   if (isGestureEnabled) {
     leftBtn.style.opacity = "0";
     rightBtn.style.opacity = "0";
-    playGround.style.touchAction = "none"; 
+    playGround.style.touchAction = "none";
   } else {
-    leftBtn.style.opacity = "1"; 
+    leftBtn.style.opacity = "1";
     rightBtn.style.opacity = "1";
-    playGround.style.touchAction = "auto"; 
+    playGround.style.touchAction = "auto";
   }
 }
 
